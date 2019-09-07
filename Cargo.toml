@@ -5,3 +5,5 @@ authors = ["dgrubb <davidanthonygrubb@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+rips_lib = { git = "https://github.com/dgrubb/rips_lib.git" }
+clap = "2.33.0"
