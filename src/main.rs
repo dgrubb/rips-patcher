@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate log;
+extern crate simple_logger;
 extern crate clap;
 
 use clap::{Arg, App};
@@ -6,6 +9,7 @@ const NAME: &str = "Rust IPS Patcher";
 const VERSION: &str = "0.0.1";
 
 fn main() {
+    let mut log_level = log::Level::Error;
     let matches = App::new(NAME)
         .version(VERSION)
         .author("David Grubb <davidanthonygrubb@gmail.com>")
@@ -45,14 +49,27 @@ fn main() {
         )
         .get_matches();
 
-    let debug = matches.is_present("Verbose");
+    // Setup some simple logging
+    if matches.is_present("Verbose") {
+        log_level = log::Level::Info;
+    }
+    simple_logger::init_with_level(log_level).unwrap();
+
     let input_rom = matches.value_of("Input ROM").unwrap();
     let output_rom = matches.value_of("Output ROM").unwrap();
     let patch_file = matches.value_of("Patch file").unwrap();
 
-    if debug {
-        println!("----------------------\n{} {}\n----------------------", NAME, VERSION);
-        println!("Parameters:\n - Input ROM:\t{}\n - Output ROM:\t{}\n - Patch file:\t{}",
-                 input_rom, output_rom, patch_file);
-    }
+    info!("{}, version: {}", NAME, VERSION);
+    info!("Parameters:\n - Input ROM:\t{}\n - Output ROM:\t{}\n - Patch file:\t{}",
+          input_rom, output_rom, patch_file);
+}
+
+fn validate_file(file: String) {
+    
+}
+
+fn load_rom_file() {
+}
+
+fn load_patch_file() {
 }
