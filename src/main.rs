@@ -3,6 +3,8 @@ extern crate log;
 extern crate simple_logger;
 extern crate clap;
 
+use std::fs::File;
+use std::io::Read;
 use clap::{Arg, App};
 
 const NAME: &str = "Rust IPS Patcher";
@@ -62,14 +64,18 @@ fn main() {
     info!("{}, version: {}", NAME, VERSION);
     info!("Parameters:\n - Input ROM:\t{}\n - Output ROM:\t{}\n - Patch file:\t{}",
           input_rom, output_rom, patch_file);
+
+
 }
 
 fn validate_file(file: String) {
     
 }
 
-fn load_rom_file() {
+fn load_binary_file(file_path: String) -> std::io::Result<Vec<u8>> {
+    let mut file = File::open(file_path)?;
+    let mut data = Vec::new();
+    file.read_to_end(&mut data)?;
+    Ok(data)
 }
 
-fn load_patch_file() {
-}
