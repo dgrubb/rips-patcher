@@ -3,8 +3,13 @@ extern crate log;
 extern crate simple_logger;
 extern crate clap;
 
+// Standard library
 use std::fs::File;
 use std::io::Read;
+use std::path::Path;
+use std::process::exit;
+
+// Crates
 use clap::{Arg, App};
 
 const NAME: &str = "Rust IPS Patcher";
@@ -57,19 +62,20 @@ fn main() {
     }
     simple_logger::init_with_level(log_level).unwrap();
 
-    let input_rom = matches.value_of("Input ROM").unwrap();
-    let output_rom = matches.value_of("Output ROM").unwrap();
-    let patch_file = matches.value_of("Patch file").unwrap();
+    let input_rom_path = matches.value_of("Input ROM").unwrap();
+    let output_rom_path = matches.value_of("Output ROM").unwrap();
+    let patch_file_path = matches.value_of("Patch file").unwrap();
 
     info!("{}, version: {}", NAME, VERSION);
     info!("Parameters:\n - Input ROM:\t{}\n - Output ROM:\t{}\n - Patch file:\t{}",
           input_rom, output_rom, patch_file);
 
-
+    Ok()
 }
 
-fn validate_file(file: String) {
-    
+fn validate_file(file: String) -> bool {
+    let fp = Path:new(file);
+    (fp.exists() && fp.is_file())
 }
 
 fn load_binary_file(file_path: String) -> std::io::Result<Vec<u8>> {
