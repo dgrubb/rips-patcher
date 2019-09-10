@@ -76,7 +76,7 @@ fn main() {
     }
 
     if !validate_file(patch_file_path) {
-        error!("Could not validate input ROM file: {}", patch_file_path);
+        error!("Could not validate input path file: {}", patch_file_path);
         exit(-1);
     }
 }
