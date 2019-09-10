@@ -68,20 +68,27 @@ fn main() {
 
     info!("{}, version: {}", NAME, VERSION);
     info!("Parameters:\n - Input ROM:\t{}\n - Output ROM:\t{}\n - Patch file:\t{}",
-          input_rom, output_rom, patch_file);
+          input_rom_path, output_rom_path, patch_file_path);
 
-    Ok()
+    if !validate_file(input_rom_path) {
+        error!("Could not validate input ROM file: {}", input_rom_path);
+        exit(-1);
+    }
+
+    if !validate_file(patch_file_path) {
+        error!("Could not validate input ROM file: {}", patch_file_path);
+        exit(-1);
+    }
 }
 
-fn validate_file(file: String) -> bool {
-    let fp = Path:new(file);
+fn validate_file(file: &str) -> bool {
+    let fp = Path::new(file);
     (fp.exists() && fp.is_file())
 }
 
 fn load_binary_file(file_path: String) -> std::io::Result<Vec<u8>> {
-    let mut file = File::open(file_path)?;
     let mut data = Vec::new();
-    file.read_to_end(&mut data)?;
+    File::open(file_path)?.read_to_end(&mut data)?;
     Ok(data)
 }
 
