@@ -79,6 +79,11 @@ fn main() {
         error!("Could not validate input path file: {}", patch_file_path);
         exit(-1);
     }
+
+    let input_rom_data = load_binary_file(input_rom_path).expect("Error reading file");
+    let path_file_data = load_binary_file(patch_file_path).expect("Error reading file");
+
+
 }
 
 fn validate_file(file: &str) -> bool {
@@ -86,7 +91,7 @@ fn validate_file(file: &str) -> bool {
     (fp.exists() && fp.is_file())
 }
 
-fn load_binary_file(file_path: String) -> std::io::Result<Vec<u8>> {
+fn load_binary_file(file_path: &str) -> std::io::Result<Vec<u8>> {
     let mut data = Vec::new();
     File::open(file_path)?.read_to_end(&mut data)?;
     Ok(data)
