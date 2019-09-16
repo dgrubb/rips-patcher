@@ -2,6 +2,7 @@
 extern crate log;
 extern crate simple_logger;
 extern crate clap;
+extern crate rips;
 
 // Standard library
 use std::fs::File;
@@ -81,9 +82,12 @@ fn main() {
     }
 
     let input_rom_data = load_binary_file(input_rom_path).expect("Error reading file");
-    let path_file_data = load_binary_file(patch_file_path).expect("Error reading file");
+    let patch_file_data = load_binary_file(patch_file_path).expect("Error reading file");
 
-
+    if !rips::verify_header_index(patch_file_data) {
+        error!("Could not find IPS header in patch file: {}", patch_file_path);
+        exit(-1);
+    }
 }
 
 fn validate_file(file: &str) -> bool {
